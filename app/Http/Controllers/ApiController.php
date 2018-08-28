@@ -21,7 +21,7 @@ class ApiController extends Controller
 
     public function countries(){
         $countries = \App\Country::all();
-        return response()->json($countries);
+        return $this->formatJSON($countries);     
     }
 
     public function country(Request $request, $code){
@@ -37,12 +37,12 @@ class ApiController extends Controller
             $country = \App\Country::where('sigla_iso_3166_1_alpha_3_stati', $code)->first();            
         }
 
-        return response()->json($country);
+        return $this->formatJSON($country);
     }
 
     public function regions(){
         $regions = \App\Region::all();
-        return response()->json($regions);
+        return $this->formatJSON($regions);
     }
 
     public function region(Request $request, $find, $provinces = false){
@@ -61,7 +61,7 @@ class ApiController extends Controller
             return response()->json($provincesResponse);            
         }
 
-        return response()->json($region);
+        return $this->formatJSON($region);
     }
 
     public function regionProvinces(Request $request, $find){
@@ -78,12 +78,13 @@ class ApiController extends Controller
         if ($region){
             $provincesResponse = \App\Province::where('id_regione', $region->id)->get(); 
         } 
-        return response()->json($provincesResponse);            
+
+        return $this->formatJSON($provincesResponse);
     }
 
     public function provinces(){
         $provinces = \App\Province::all();
-        return response()->json($provinces);
+        return $this->formatJSON($provinces);
     }
 
     public function province(Request $request, $find){
@@ -102,28 +103,28 @@ class ApiController extends Controller
             }
         }
 
-        return response()->json($province);
+        return $this->formatJSON($province);
     }
 
     public function cities(){
         $cities = \App\City::all();
-        return response()->json($cities);
+        return $this->formatJSON($cities);
     }
 
     public function city(Request $request, $find){
         $city = null;
 
         if (is_numeric($find)){
-            $city = \App\Province::where('cod_istat', $find)->first();  
+            $city = \App\City::where('cod_istat', $find)->first();  
             if (!$city){
-                $city = \App\Province::where('id', $find)->first();            
+                $city = \App\City::where('id', $find)->first();            
             }          
         } else {
             $find = strtolower($find);
-            $city = \App\Province::where('nome', 'LIKE', '%'.$find.'%')->first();
+            $city = \App\City::where('nome', 'LIKE', '%'.$find.'%')->first();
         }
 
-        return response()->json($city);
+        return $this->formatJSON($city);
     }
 
     public function provinceCities(Request $request, $find){
@@ -147,6 +148,17 @@ class ApiController extends Controller
             $cities = \App\City::where('id_provincia', $province->id)->get();
         }
 
-        return response()->json($cities);
+        return $this->formatJSON($cities);
+    }
+
+    function formatJSON($json){
+        $responsecode = 200;
+        
+        $header = array (
+                'Content-Type' => 'application/json; charset=UTF-8',
+                'charset' => 'utf-8'
+            );
+        
+        return response()->json($json , $responsecode, $header, JSON_UNESCAPED_UNICODE);
     }
 }
