@@ -157,7 +157,7 @@ class ApiController extends Controller
         $header = array (
                 'Content-Type' => 'application/json; charset=UTF-8',
                 'charset' => 'utf-8',
-                'Access-Control-Allow-Origin' => '*'
+                'Access-Control-Allow-Origin' => '*' 
             );
         
         return response()->json($json , $responsecode, $header, JSON_UNESCAPED_UNICODE);
