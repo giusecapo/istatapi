@@ -20,7 +20,7 @@ class ApiController extends Controller
     }
 
     public function countries(){
-        $countries = \App\Country::all();
+        $countries = \App\Country::orderBy('nome')->get();
         return $this->formatJSON($countries);     
     }
 
@@ -41,7 +41,7 @@ class ApiController extends Controller
     }
 
     public function regions(){
-        $regions = \App\Region::all();
+        $regions = \App\Region::orderBy('nome')->get();
         return $this->formatJSON($regions);
     }
 
@@ -83,7 +83,7 @@ class ApiController extends Controller
     }
 
     public function provinces(){
-        $provinces = \App\Province::all();
+        $provinces = \App\Province::orderBy('nome')->get();
         return $this->formatJSON($provinces);
     }
 
@@ -107,7 +107,7 @@ class ApiController extends Controller
     }
 
     public function cities(){
-        $cities = \App\City::all();
+        $cities = \App\City::orderBy('nome')->get();
         return $this->formatJSON($cities);
     }
 
@@ -145,7 +145,7 @@ class ApiController extends Controller
         }
 
         if ($province){
-            $cities = \App\City::where('id_provincia', $province->id)->get();
+            $cities = \App\City::where('id_provincia', $province->id)->orderBy('nome')->get();
         }
 
         return $this->formatJSON($cities);
@@ -156,7 +156,8 @@ class ApiController extends Controller
         
         $header = array (
                 'Content-Type' => 'application/json; charset=UTF-8',
-                'charset' => 'utf-8'
+                'charset' => 'utf-8',
+                'Access-Control-Allow-Origin' => '*'
             );
         
         return response()->json($json , $responsecode, $header, JSON_UNESCAPED_UNICODE);
