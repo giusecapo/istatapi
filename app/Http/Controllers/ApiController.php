@@ -53,6 +53,8 @@ class ApiController extends Controller
             $region = \App\Region::where('cod_istat', $find)->first();            
         } else {
             $find = strtolower($find);
+            $find = urldecode($find);
+
             $region = \App\Region::where('nome', 'LIKE', '%'.$find.'%')->first();
         }
 
@@ -72,6 +74,8 @@ class ApiController extends Controller
             $region = \App\Region::where('cod_istat', $find)->first();            
         } else {
             $find = strtolower($find);
+            $find = urldecode($find);
+
             $region = \App\Region::where('nome', 'LIKE', '%'.$find.'%')->first();
         }
         
@@ -97,6 +101,8 @@ class ApiController extends Controller
             }          
         } else {
             $find = strtolower($find);
+            $find = urldecode($find);
+
             $province = \App\Province::where('sigla', 'LIKE', '%'.$find.'%')->first();
             if (!$province){
                 $province = \App\Province::where('nome', 'LIKE', '%'.$find.'%')->first();
@@ -121,6 +127,8 @@ class ApiController extends Controller
             }          
         } else {
             $find = strtolower($find);
+            $find = urldecode($find);
+
             $city = \App\City::where('nome', 'LIKE', '%'.$find.'%')->first();
         }
 
