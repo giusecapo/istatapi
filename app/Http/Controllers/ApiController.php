@@ -138,6 +138,8 @@ class ApiController extends Controller
             }          
         } else {
             $find = strtolower($find);
+            $find = urldecode($find);
+
             $province = \App\Province::where('sigla', 'LIKE', '%'.$find.'%')->first();
             if (!$province){
                 $province = \App\Province::where('nome', 'LIKE', '%'.$find.'%')->first();
